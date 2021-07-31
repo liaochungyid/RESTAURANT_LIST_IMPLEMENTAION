@@ -16,7 +16,7 @@ app.use(express.static('public'))
 
 // routes setting
 app.get('/', (req, res) => {
-  res.render("index")
+  res.render("index", { item: restaurantList.results })
 })
 
 // start and listen on the Express server
