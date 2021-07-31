@@ -13,6 +13,12 @@ app.set('view engine', 'handlebars')
 // require restaurants data
 const restaurantList = require("./restaurant.json")
 
+// pre-processing
+function LCandRS(string) {
+  // combination of tolowerCase and remove spacing
+  return string.toLowerCase().split(' ').join('')
+}
+
 // setting static files
 app.use(express.static('public'))
 
@@ -30,11 +36,9 @@ app.get('/restaurants/:id', (req, res) => {
 
 // search (index page)
 app.get('/search', (req, res) => {
-  const keyword = req.query.keyword.toLowerCase()
-  const restaurants = restaurantList.results.filter(restaurant =>
-    restaurant.name.toLowerCase().includes(keyword) || restaurant.category.toLowerCase().includes(keyword)
-  )
-  res.render('index', { item: restaurants, keyword })
+  const keyword = LCandRS(req.query.keyword)
+  const restaurants = restaurantList.results.filter(restaurant => LCandRS(restaurant.name).includes(keyword) || LCandRS(restaurant.category).includes(keyword))
+  res.render('index', { item: restaurants, keyword }) // 'keyword >> object literal extension
 })
 
 // start and listen on the Express server
