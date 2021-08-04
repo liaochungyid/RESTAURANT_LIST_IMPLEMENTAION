@@ -1,5 +1,6 @@
 // require express
 const express = require("express")
+const mongoose = require("mongoose")
 const app = express()
 const port = 3000
 
@@ -12,6 +13,18 @@ app.set('view engine', 'handlebars')
 
 // require restaurants data
 const restaurantList = require("./restaurant.json")
+
+// connect to mongodb
+mongoose.connect("mongodb://127.0.0.1:27017/restaurant-list", { useNewUrlParser: true, useUnifiedTopology: true })
+const db = mongoose.connection
+
+db.on('error', () => {
+  console.log("mongodb error!")
+})
+
+db.once('open', () => {
+  console.log("mongodb connect successfully !")
+})
 
 // pre-processing
 function LCandRS(string) {
